@@ -8,24 +8,32 @@ java.classpath.push "#{__dirname}/../jar/junit.jar"
 java.classpath.push "#{__dirname}/../jar/log4j-1.2.15.jar"
 java.classpath.push "#{__dirname}/../jar/org.hamcrest.core_1.1.0.v20090501071000.jar"
 java.classpath.push "#{__dirname}/../jar/opinosis.jar"
-java.classpath.push "#{__dirname}/../jar/opinosis-xissy-0.0.1.jar"
+java.classpath.push "#{__dirname}/../jar/opinosis-xissy-0.0.2.jar"
 
 
 summarize = (parsedSentences, callback) ->
-  java.newInstance 'io.recom.opinosis.Opinosis', (err, opinosis) ->
-    return callback err  if err?
-
-    fullText = parsedSentences.join '\n'
-    opinosis.summarize fullText, (err, summarizedText) ->
+  java.newInstance 'io.recom.opinosis.Opinosis',
+    "#{__dirname}/../opinosis.properties"
+  ,
+    (err, opinosis) ->
       return callback err  if err?
 
-      summarizedSentences = []
-      for sentence in summarizedText.split '\n'
-        continue  if sentence.length is 0
-        sentence = sentence[0...-2]  if sentence[-2..-1] is ' .'
-        summarizedSentences.push sentence
+      fullText = parsedSentences.join '\n'
+      fullText = fullText.replace /\/:/g, '/,'
+      opinosis.summarize fullText, (err, summarizedText) ->
+        return callback err  if err?
 
-      callback null, summarizedSentences
+        summarizedSentences = []
+        for sentence in summarizedText.split '\n'
+          continue  if sentence.length is 0
+          sentence = sentence[0...-2]  if sentence[-2..-1] is ' .'
+          sentence = sentence.replace /\ ,/g, ','
+          sentence = sentence.replace /\ 's\ /g, '\'s '
+          sentence = sentence.replace /\ 've\ /g, '\'ve '
+          sentence = sentence.replace /\ n\'t\ /g, 'n\'t '
+          summarizedSentences.push sentence
+
+        callback null, summarizedSentences
 
 
 
