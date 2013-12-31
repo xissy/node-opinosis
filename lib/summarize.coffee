@@ -30,6 +30,7 @@ summarize = (parsedSentences, callback) ->
           sentence = sentence.replace /\ ,/g, ','
           sentence = sentence.replace /\ 's\ /g, '\'s '
           sentence = sentence.replace /\ 've\ /g, '\'ve '
+          sentence = sentence.replace /\ 're\ /g, '\'re '
           sentence = sentence.replace /\ n\'t\ /g, 'n\'t '
           summarizedSentences.push sentence
 
