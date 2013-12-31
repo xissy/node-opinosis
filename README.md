@@ -37,7 +37,7 @@ var parsedSentences = [
   'the/DT food/NN was/VBD delicious/JJ in/IN both/CC the/DT consortia/NN and/CC forum/NN restaurants/NNS in/IN the/DT hotel/NN ./.',
   'a/JJ b/JJ c/NN ./.',
   'a/JJ b/JJ c/NN ./.'
-]
+];
 ```
 
 #### Summarize
